@@ -214,11 +214,22 @@ def run_analysis(circ_file, mirna_file, deg_file, debug=False):
 # ---------- CLI ----------
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--circ", required=True)
-    parser.add_argument("--mirna", required=True)
-    parser.add_argument("--deg", required=True)
-    parser.add_argument("--debug", action="store_true")
+    parser = argparse.ArgumentParser(
+        description="DeepRegulatoryNet: circRNA–miRNA–mRNA analysis pipeline.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Example usage:\n"
+            "  python DeepRegulatoryNet.py --circ Test_Data/DEcircRNA.txt "
+            "--mirna Test_Data/DEmiRNA.txt --deg Test_Data/DEG.txt\n\n"
+            "Notes:\n"
+            "  - Ensure Model_Files contains trained model and encoders.\n"
+            "  - Use --debug for verbose logging and stack traces."
+        )
+    )
+    parser.add_argument("--circ", required=True, help="Path to circRNA IDs (one per line, starting with 'hsa_circ_').")
+    parser.add_argument("--mirna", required=True, help="Path to miRNA IDs (one per line, starting with 'hsa-miR').")
+    parser.add_argument("--deg", required=True, help="Path to DEG gene symbols (one per line).")
+    parser.add_argument("--debug", action="store_true", help="Enable debug logging and stack traces.")
     args = parser.parse_args()
 
     setup_logging("pipeline.log", args.debug)
